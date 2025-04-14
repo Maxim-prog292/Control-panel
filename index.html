@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
+    <title>Три контейнера</title>
+    <style>
+      @font-face {
+        font-family: Our;
+        src: url(/fonts/TT-Paplane-Regular.ttf);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Our;
+        -webkit-touch-callout: none; /* iOS Safari */
+        -webkit-user-select: none; /* Safari */
+        -khtml-user-select: none; /* Konqueror HTML */
+        -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+        user-select: none;
+
+        touch-action: none;
+        user-select: none;
+      }
+
+      body,
+      html {
+        width: 100%;
+        height: 100%;
+        /* background: url(/6449413725.jpg) no-repeat center; */
+        background: rgb(51, 49, 49);
+        background-size: 100%;
+        font-family: Arial, sans-serif;
+      }
+
+      .wrapper {
+        display: flex;
+        width: 100vw;
+        height: 100vh;
+      }
+
+      .section {
+        height: 100%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .left,
+      .right {
+        width: 25%;
+      }
+
+      .center {
+        width: 50%;
+        justify-content: flex-start;
+      }
+
+      .block {
+        background: #4d4d4d10;
+        border-radius: 25px;
+        border: 1px solid grey;
+        backdrop-filter: blur(35px);
+        padding: 30px;
+        box-sizing: border-box;
+      }
+
+      /* Первый и третий контейнеры */
+      .left .block,
+      .right .block {
+        width: 100%;
+        height: calc((100% - 40px) / 3); /* два интервала по 20px */
+      }
+
+      .left .block:not(:last-child),
+      .right .block:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      /* Центр: верхний блок 70%, нижние два — по 50% ширины */
+      .center {
+        padding: 20px;
+      }
+
+      .top-block {
+        width: 100%;
+        height: 70%;
+        margin-bottom: 20px;
+        padding: 40px;
+        display: flex;
+      }
+
+      .bottom-row {
+        display: flex;
+        height: calc(30% - 20px);
+        gap: 20px;
+      }
+
+      .bottom-row .block {
+        width: 50%;
+        height: 100%;
+      }
+      /* радар */
+      .radar {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        background-color: #106325;
+
+        border-radius: 100%;
+        overflow: hidden;
+        margin-right: 100px;
+        box-shadow: 0 0 20px #1fbe47;
+      }
+
+      .radar-sweep {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: conic-gradient(
+          rgba(2, 219, 31, 0.3) 0deg,
+          transparent 90deg
+        );
+        animation: rotate 2s linear infinite;
+        border-radius: 100%;
+      }
+
+      @keyframes rotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .grid_radar {
+        width: 480px;
+        height: 480px;
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        z-index: 10;
+      }
+
+      /* свичи */
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 200px;
+        height: 80px;
+        margin: 9px;
+        border-radius: 25px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #7b7a7a;
+        -webkit-transition: 0.4s;
+        transition: 0.4s cubic-bezier(0, 1, 0.5, 1);
+        border-radius: 25px;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 70px;
+        width: 80px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: 0.4s;
+        transition: 0.4s cubic-bezier(0, 1, 0.5, 1);
+        border-radius: 25px;
+      }
+
+      input:checked + .slider {
+        background-color: #24afbb;
+      }
+
+      input:focus + .slider {
+        box-shadow: 0 0 10px #24afbb;
+      }
+
+      input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(112px);
+      }
+
+      /* Rounded sliders */
+      .slider.round {
+        border-radius: 34px;
+      }
+
+      .slider.round:before {
+        border-radius: 50%;
+      }
+
+      input:checked + .slider.red {
+        background-color: crimson;
+      }
+
+      input:focus + .slider.red {
+        box-shadow: 0 0 4px crimson;
+      }
+
+      input:checked + .slider.red {
+        background-color: crimson;
+      }
+
+      #round {
+        border-radius: 34px;
+      }
+
+      #round:before {
+        border-radius: 50%;
+      }
+
+      input:checked + .slider.red {
+        background-color: crimson;
+      }
+
+      input:focus + .slider.blue {
+        box-shadow: 0 0 4px #424bf5;
+      }
+
+      input:checked + .slider.blue {
+        background-color: #424bf5;
+      }
+
+      /* календарь */
+      .calendar-container {
+        width: 400px;
+        border-radius: 12px;
+        overflow: hidden;
+        backdrop-filter: blur(35px);
+      }
+
+      .calendar-header {
+        backdrop-filter: blur(35px);
+        color: white;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      #prevMonthBtn,
+      #nextMonthBtn {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .calendar-days {
+        padding: 10px;
+      }
+
+      .weekdays {
+        margin-bottom: 10px;
+      }
+
+      .weekdays span {
+        width: 32px;
+        text-align: center;
+        font-weight: bold;
+        color: #ffffff;
+        margin-right: 39px;
+      }
+
+      .days {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+      }
+
+      .day {
+        color: #d4d4d4;
+        width: 32px;
+        height: 32px;
+        line-height: 32px;
+        text-align: center;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
+
+      .day.current {
+        background: #24afbb50;
+        backdrop-filter: blur(35px);
+        color: white;
+        border-radius: 50%;
+      }
+
+      .day.has-task {
+        text-decoration: underline;
+        text-decoration-color: green;
+        text-decoration-thickness: 3px;
+      }
+
+      .events-tasks {
+        padding: 15px;
+      }
+
+      .date-header {
+        margin-bottom: 10px;
+      }
+
+      .tasks {
+        margin-bottom: 15px;
+      }
+
+      .task {
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+      }
+
+      .task-input {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .task-input input[type="text"],
+      .task-input input[type="time"] {
+        flex: 1;
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+      }
+
+      .task-input button {
+        padding: 10px 15px;
+        background: #3b5998;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      .all-tasks h4 {
+        margin-top: 20px;
+      }
+
+      .all-tasks .task {
+        background: #e9e9e9;
+      }
+      #addTaskBtn {
+        display: none;
+      }
+      .calendar {
+        display: flex;
+        padding: 20px;
+        justify-content: center;
+      }
+      .temp {
+        font-size: 32px;
+        color: #fff;
+      }
+      .pokazatels {
+        display: flex;
+        justify-content: space-around;
+      }
+      .pokazatel {
+        display: flex;
+        align-items: end;
+        width: 30%;
+        height: 280px;
+        border-radius: 20px 20px 5px 5px;
+        background: #ffffff59;
+      }
+      .air,
+      .fuel,
+      .food {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        padding-bottom: 10px;
+        border-radius: 20px 20px 5px 5px;
+      }
+      .fuel {
+        height: 0%;
+        background: #1fbe47;
+      }
+      .air {
+        height: 0%;
+        background: #1f9ebe;
+      }
+      .food {
+        height: 0%;
+        background: #ffc421;
+      }
+      .startShip1 {
+        animation: start_pocazateli1 0.5s;
+        animation-fill-mode: forwards;
+      }
+      @keyframes start_pocazateli1 {
+        0% {
+          height: 0%;
+        }
+        100% {
+          height: 100%;
+        }
+      }
+      .startShip2 {
+        animation: start_pocazateli2 0.5s;
+        animation-fill-mode: forwards;
+      }
+      @keyframes start_pocazateli2 {
+        0% {
+          height: 0%;
+        }
+        100% {
+          height: 96%;
+        }
+      }
+      .startShip3 {
+        animation: start_pocazateli3 0.5s;
+        animation-fill-mode: forwards;
+      }
+      @keyframes start_pocazateli3 {
+        0% {
+          height: 0%;
+        }
+        100% {
+          height: 98%;
+        }
+      }
+      .stopShip {
+        animation: stop_pocazateli3 0.5s;
+        animation-fill-mode: forwards;
+      }
+      @keyframes stop_pocazateli3 {
+        0% {
+          height: 98%;
+        }
+        100% {
+          height: 0%;
+        }
+      }
+      .dvigatel {
+        display: flex;
+        flex-direction: column;
+        justify-content: top;
+        align-items: center;
+      }
+      .dvigatel_button {
+        width: 100%;
+        height: 100px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+      .dvigatel_start {
+        width: 30%;
+        height: 100%;
+        background: #990000;
+        box-shadow: 0 0 10px #990000;
+        border-radius: 10px;
+        color: #ffffff;
+        font-size: 28px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .dvigatel_start:active {
+        box-shadow: 0 0 30px #990000;
+        transform: scale(1.05);
+        transition: 0.3s;
+      }
+      .yes {
+        background: #009933;
+        box-shadow: 0 0 10px #009933;
+      }
+      .dvigatel_status {
+        font-size: 24px;
+        color: #ffffff;
+        margin-top: 60px;
+      }
+      .btn_start,
+      .btn_stop,
+      .btn_reload {
+        width: 100%;
+        height: 118px;
+        font-size: 36px;
+        height: 43.5%;
+        border: none;
+        border-radius: 20px;
+        color: #ffffff;
+        box-shadow: 0 0 10px #ffffff;
+      }
+      .btn_reload {
+        color: #ffffff;
+        background: #ca8434;
+        box-shadow: 0 0 10px #ca8434;
+        margin-top: 30px;
+      }
+      .btn_stop {
+        color: #ffffff;
+        background: #d04848;
+        box-shadow: 0 0 10px #d04848;
+      }
+      .btn_stop:active {
+        transform: scale(1.05);
+        transition: 0.3s;
+        box-shadow: 0 0 30px #d04848;
+      }
+      .btn_start:active {
+        transform: scale(1.05);
+        transition: 0.3s;
+        box-shadow: 0 0 30px #009933;
+      }
+      .btn_reload:active {
+        transform: scale(1.05);
+        transition: 0.3s;
+        box-shadow: 0 0 30px #ca8434;
+      }
+      .desc_block {
+        font-size: 45px;
+        color: #ffffff;
+        position: absolute;
+        bottom: 50px;
+        left: 400px;
+      }
+      .legenda {
+        font-size: 32px;
+        color: #ffffff;
+        position: absolute;
+        bottom: 200px;
+        left: 650px;
+      }
+      .progress {
+        width: 100%;
+        height: 40%;
+        background: #7b7a7a;
+        margin-top: 20px;
+        border-radius: 20px;
+      }
+      .progress_line {
+        height: 100%;
+        width: 0%;
+        border-radius: 20px;
+        background: #33ffff;
+        box-shadow: 0 0 10px #33ffff;
+      }
+      .buttons_panel {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
+        gap: 10px;
+      }
+      .button {
+        width: 60px;
+        height: 60px;
+        background: #6c6b6b;
+        border-radius: 10px;
+      }
+      .button:active {
+        transform: scale(1.02);
+      }
+      canvas {
+        background: #0c8323;
+        border-radius: 20px;
+        box-shadow: 0 0 5px #0c8323;
+      }
+      .osciloscop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .radar_dot {
+        background: #00ff66;
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        z-index: 111;
+        border-radius: 100%;
+      }
+      .sun {
+        top: 200px;
+        left: 100px;
+      }
+      .earth {
+        top: 300px;
+        left: 300px;
+      }
+      .moon {
+        top: 280px;
+        left: 270px;
+      }
+      .ast1 {
+        top: 300px;
+        left: 520px;
+        background: red;
+      }
+      .ast2 {
+        top: 100px;
+        left: 220px;
+        background: red;
+      }
+      .grid_osci {
+        position: absolute;
+      }
+      .system_status {
+        position: absolute;
+        color: white;
+        top: 185px;
+        left: 100px;
+        z-index: 10px;
+        font-size: 18px;
+      }
+      .overlay {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        z-index: 20;
+      }
+      .overlay2 {
+        position: absolute;
+        width: 400px;
+        height: 300px;
+        z-index: 20;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Первый контейнер -->
+      <div class="section left">
+        <div class="block">
+          <p class="temp">
+            Температура за бортом: -124 градуса<br />
+            Температура в корабле:<br />
+            19 градусов<br />
+            Экипаж: 
+            20 человек
+          </p>
+        </div>
+        <div class="block">
+          <div class="pokazatels">
+            <div class="pokazatel">
+              <div class="fuel pokazatel_progress">Топливо</div>
+            </div>
+            <div class="pokazatel">
+              <div class="air pokazatel_progress">Кислород</div>
+            </div>
+            <div class="pokazatel">
+              <div class="food pokazatel_progress">Провизия</div>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <button
+            class="btn_stop"
+            style="background: #6c6b6b; box-shadow: 0 0 10px #6c6b6b"
+            disabled="disabled"
+          >
+            Стоп
+          </button>
+          <button class="btn_reload">Перезагрузка систем</button>
+        </div>
+      </div>
+
+      <!-- Центральный контейнер -->
+      <div class="section center">
+        <div class="block top-block">
+          <div class="overlay"></div>
+          <div>
+            <p class="desc_block">Радар</p>
+            <div class="radar_dot sun"></div>
+            <div class="radar_dot earth"></div>
+            <div class="radar_dot moon"></div>
+            <div class="radar_dot ast1"></div>
+            <div class="radar_dot ast2"></div>
+            <img class="grid_radar" src="/Group 110.png" alt="" />
+            <div class="radar">
+              <div class="radar-sweep"></div>
+            </div>
+          </div>
+          <div class="switchs">
+            <label class="switch">
+              <input type="checkbox" />
+              <span class="slider"></span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" />
+              <span class="slider"></span>
+            </label>
+            <label class="switch">
+              <input type="checkbox" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="legenda">
+            <p>
+              Астероиды: 2<br />
+              Планеты: 3
+            </p>
+          </div>
+        </div>
+        <div class="bottom-row">
+          <div class="block dvigatel">
+            <div class="dvigatel_button">
+              <div class="dvigatel_start">1</div>
+              <div class="dvigatel_start">2</div>
+              <div class="dvigatel_start">3</div>
+            </div>
+            <p class="dvigatel_status">Двигатели отключены</p>
+          </div>
+          <div class="block start_ship">
+            <button class="btn_start" disabled="disabled">Пуск</button>
+            <div class="progress">
+              <p class="system_status">
+                Статус системы:
+                <span class="system_status_span">отключена</span>
+              </p>
+              <div class="progress_line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Третий контейнер -->
+      <div class="section right">
+        <div class="block calendar">
+          <div class="calendar-container">
+            <div class="calendar-header">
+              <button id="prevMonthBtn"></button>
+              <h2 id="monthYear"></h2>
+              <button id="nextMonthBtn"></button>
+            </div>
+            <div class="calendar-days">
+              <div class="weekdays">
+                <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span
+                ><span>Пт</span><span>Сб</span><span>Вс</span>
+              </div>
+              <div class="days" id="days">
+                <!-- The days will be generated dynamically here -->
+              </div>
+            </div>
+            <div>
+              <div>
+                <button id="addTaskBtn">Add</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="block">
+          <div class="buttons_panel">
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+            <div class="button"></div>
+          </div>
+        </div>
+        <div class="block osciloscop">
+          <div class="overlay2"></div>
+          <img src="Group 111.png" alt="" class="grid_osci" />
+          <canvas height="250" width="380" id="canvas"> </canvas>
+        </div>
+      </div>
+    </div>
+    <script>
+      window.addEventListener("mousewheel", function (e) {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          return false;
+        }
+      });
+      document.addEventListener(
+        "touchstart",
+        (e) => {
+          // Если используется более одного пальца
+          if (e.touches.length > 1) {
+            e.preventDefault(); // Отключаем действие по умолчанию
+          }
+        },
+        { passive: false }
+      ); // { passive: false } важно для предотвращения поведения по умолчанию
+      document.addEventListener(
+        "touchmove",
+        (e) => {
+          if (e.touches.length > 1) {
+            e.preventDefault(); // Отключаем зумирование двумя пальцами
+          }
+        },
+        { passive: false }
+      ); // { passive: false } важно для отмены действия по умолчанию
+
+      const colors = [
+        "red",
+        "blue",
+        "green",
+        "fuchsia",
+        "lime",
+        "navy",
+        "olive",
+        "teal",
+        "white",
+      ];
+      const dvigatelBtn = document.querySelectorAll(".dvigatel_start");
+      const dvigatelStatus = document.querySelector(".dvigatel_status");
+      const buttonStart = document.querySelector(".btn_start");
+      const buttonStop = document.querySelector(".btn_stop");
+      const btnReload = document.querySelector(".btn_reload");
+      const progress = document.querySelector(".progress_line");
+      const button = document.querySelectorAll(".button");
+      const radarDots = document.querySelectorAll(".radar_dot");
+      const pokazatelProgress = document.querySelectorAll(
+        ".pokazatel_progress"
+      );
+      const systemStatus = document.querySelector(".system_status_span");
+      const blocks = document.querySelectorAll(".block");
+      let oscel;
+      let progressLine = 0;
+      let wave = 5;
+      let check = 0;
+      function ligthBlocksStart() {
+        blocks.forEach((block) => {
+          block.style = "box-shadow: 0 0 20px #999; transition: .5s";
+        });
+      }
+      function ligthBlocksStop() {
+        blocks.forEach((block) => {
+          block.style = "box-shadow: none; transition: .5s";
+        });
+      }
+      function systemStatusCheck(status) {
+        systemStatus.textContent = status;
+      }
+      btnReload.addEventListener("click", () => {
+        location.reload();
+      });
+      function pokazateliUp() {
+        pokazatelProgress.forEach((e, i) => {
+          e.classList.remove(`stopShip`);
+          e.classList.add(`startShip${i + 1}`);
+        });
+      }
+      function pokazateliDown() {
+        pokazatelProgress.forEach((e, i) => {
+          e.classList.remove(`startShip${i + 1}`);
+          e.classList.add(`stopShip`);
+        });
+      }
+      function startBtnRemove() {
+        dvigatelBtn.forEach((btn) => {
+          btn.classList.remove("yes");
+        });
+      }
+      function progressRemove() {
+        progress.style = "width: 0%";
+        progressLine = 0;
+      }
+      function dvigatelStatusRemove() {
+        dvigatelStatus.textContent = "Двигатели отключены";
+      }
+      buttonStop.addEventListener("click", () => {
+        check = 0;
+        pokazateliDown();
+        startBtnRemove();
+        progressRemove();
+        cancelAnimationFrame(oscel);
+        ligthBlocksStop();
+        changeColorStop();
+        systemStatusCheck("отключена");
+        buttonStart.style = "background: #6C6B6B; box-shadow: 0 0 10px #6C6B6B";
+        buttonStop.style = "background: #6C6B6B; box-shadow: 0 0 10px #6C6B6B";
+        buttonStart.setAttribute("disabled", "disabled");
+        buttonStop.setAttribute("disabled", "disabled");
+      });
+
+      setInterval(() => {
+        radarDots.forEach((dot) => {
+          setInterval(() => {
+            dotBlink(dot);
+          }, 1300);
+        });
+      }, 2000);
+
+      function changeColorStart() {
+        button.forEach((btn) => {
+          let randomColor = Math.floor(Math.random() * 10);
+          btn.style = `background: ${colors[randomColor]}; box-shadow: 0 0 10px ${colors[randomColor]}; transition: .5s`;
+        });
+      }
+      function changeColorStop() {
+        button.forEach((btn) => {
+          btn.style = `background:#6C6B6B; transition: .5s`;
+        });
+      }
+
+      function dotBlink(dot) {
+        dot.style = "display: none";
+        setInterval(() => {
+          dot.style = "display: block";
+        }, 1300);
+      }
+
+      button.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          changeColor(e.target);
+        });
+      });
+
+      function changeColor(element) {
+        let randomColor = colors[Math.floor(Math.random() * 10)];
+        if (element.style.background == randomColor) {
+          element.style = `background: #985cff; box-shadow: 0 0 10px #985cff`;
+        } else {
+          element.style = `background: ${randomColor}; box-shadow: 0 0 10px ${randomColor}`;
+        }
+      }
+
+      dvigatelBtn.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          btn.classList.add("yes");
+          checkStart();
+        });
+      });
+
+      function checkStart() {
+        
+        ++check;
+        if (check == 3) {
+          dvigatelStatus.innerHTML =
+            "Двигатели включены: <br> К запуску готовы";
+
+          buttonStart.removeAttribute("disabled");
+          if (buttonStart.getAttribute("disabled")) {
+            buttonStart.style.background = "grey";
+          } else {
+            buttonStart.style =
+              "box-shadow: 0 0 30px #009933; background: #009933";
+          }
+        } else {
+          dvigatelStatus.innerHTML = "Двигатели отключены";
+          buttonStart.setAttribute("disabled", "disabled");
+        }
+      }
+      let intervalID;
+      buttonStart.addEventListener("click", () => {
+        buttonStart.setAttribute("disabled", "disabled");
+        systemStatusCheck("загрузка");
+        if (progressLine == 100) {
+          buttonStart.setAttribute("disabled");
+          return;
+        }
+        wave = 5;
+        oscel = animate();
+        intervalID = setInterval(() => {
+          wave = 30;
+          progress.style = `width: ${(progressLine += 10)}%`;
+          if (progressLine == 100) {
+            wave = 70;
+            changeColorStart();
+            pokazateliUp();
+            ligthBlocksStart();
+            systemStatusCheck("активна");
+            buttonStop.style =
+              "background: #d04848; box-shadow: 0 0 10px #d04848";
+            buttonStop.removeAttribute("disabled");
+            clearInterval(intervalID);
+          }
+        }, 500);
+      });
+      var canvas = document.querySelector("#canvas");
+      var ctx = canvas.getContext("2d");
+
+      function drawSine(phase, w) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+        for (var i = 0; i < canvas.width; i++) {
+          ctx.lineTo(i, wave * Math.sin(i * 0.01 + phase) + w);
+        }
+        ctx.stroke();
+        ctx.strokeStyle = "blue";
+      }
+      //creo la variabile fase
+      var ph = 0;
+      //creo la funzione che richiama draw dando una fase incrementata
+      function animate() {
+        drawSine(ph, 125);
+        ph += 0.1;
+        //disegno alla massima velocità
+        requestAnimationFrame(animate);
+      }
+      //potevo richiamare la funzione animate senza request, tramite
+      //setInterval(animate, 1);
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // Get references to the HTML elements we will interact with
+        const daysContainer = document.getElementById("days");
+        const monthYearDisplay = document.getElementById("monthYear");
+        const selectedDateDisplay = document.getElementById("selectedDate");
+        const tasksContainer = document.getElementById("tasks");
+        const newTaskInput = document.getElementById("newTaskInput");
+        const taskTimeInput = document.getElementById("taskTime");
+        const addTaskBtn = document.getElementById("addTaskBtn");
+        const allTasksContainer = document.getElementById("allTasks");
+        const prevMonthBtn = document.getElementById("prevMonthBtn");
+        const nextMonthBtn = document.getElementById("nextMonthBtn");
+
+        // Initialize the current date and the selected date
+        const currentDate = new Date();
+        let selectedDate = new Date(currentDate);
+
+        // Initialize an empty object to store tasks
+        let tasks = {};
+
+        // Function to render the calendar for the selected month
+        function renderCalendar() {
+          const year = selectedDate.getFullYear();
+          const month = selectedDate.getMonth();
+          const firstDayOfMonth = new Date(year, month, 1);
+          const lastDayOfMonth = new Date(year, month + 1, 0);
+          const firstDayOfWeek = (firstDayOfMonth.getDay() + 6) % 7; // Adjust for Monday start
+          const lastDateOfMonth = lastDayOfMonth.getDate();
+
+          // Display the current month and year
+          monthYearDisplay.textContent = `${selectedDate
+            .toLocaleString("default", { month: "long" })
+            .toUpperCase()} ${year}`;
+
+          // Clear the previous days
+          daysContainer.innerHTML = "";
+
+          // Add empty divs for the days before the first day of the month
+          for (let i = 0; i < firstDayOfWeek; i++) {
+            const emptyDiv = document.createElement("div");
+            daysContainer.appendChild(emptyDiv);
+          }
+
+          // Add divs for each day of the month
+          for (let i = 1; i <= lastDateOfMonth; i++) {
+            const dayElement = document.createElement("div");
+            dayElement.classList.add("day");
+            dayElement.textContent = i;
+
+            // Highlight the current day
+            if (
+              i === currentDate.getDate() &&
+              month === currentDate.getMonth() &&
+              year === currentDate.getFullYear()
+            ) {
+              dayElement.classList.add("current");
+            }
+
+            // Underline days that have tasks
+            if (tasks[new Date(year, month, i).toDateString()]) {
+              dayElement.classList.add("has-task");
+            }
+
+            // Add click event to select the date
+            dayElement.addEventListener("click", () =>
+              selectDate(new Date(year, month, i))
+            );
+            daysContainer.appendChild(dayElement);
+          }
+        }
+
+        // Function to select a date and display its tasks
+        function selectDate(date) {
+          selectedDate = date;
+          const day = selectedDate.getDate();
+          const month = selectedDate.getMonth() + 1;
+          const year = selectedDate.getFullYear();
+          selectedDateDisplay.innerHTML = `<h3>${day}/${month}/${year}</h3>`;
+          renderTasks();
+        }
+
+        // Function to render tasks for the selected date
+        function renderTasks() {
+          const day = selectedDate.toDateString();
+          tasksContainer.innerHTML = "";
+
+          if (tasks[day]) {
+            tasks[day].forEach((task) => {
+              const taskElement = document.createElement("div");
+              taskElement.classList.add("task");
+              taskElement.textContent = `${task.time} - ${task.description}`;
+              tasksContainer.appendChild(taskElement);
+            });
+          }
+
+          renderAllTasks();
+        }
+
+        // Function to render all tasks for the selected month
+        function renderAllTasks() {
+          const year = selectedDate.getFullYear();
+          const month = selectedDate.getMonth();
+          const lastDayOfMonth = new Date(year, month + 1, 0);
+
+          allTasksContainer.innerHTML = "<h4>Tasks for the month</h4>";
+
+          for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+            const day = new Date(year, month, i).toDateString();
+
+            if (tasks[day]) {
+              tasks[day].sort((a, b) => a.time.localeCompare(b.time));
+              tasks[day].forEach((task) => {
+                const taskElement = document.createElement("div");
+                taskElement.classList.add("task");
+                taskElement.textContent = `${day} - ${task.time} - ${task.description}`;
+                allTasksContainer.appendChild(taskElement);
+              });
+            }
+          }
+        }
+
+        // Function to add a new task for the selected date
+        function addTask() {
+          const taskDescription = newTaskInput.value;
+          const taskTime = taskTimeInput.value;
+          if (taskDescription === "" || taskTime === "") return;
+
+          const day = selectedDate.toDateString();
+          if (!tasks[day]) {
+            tasks[day] = [];
+          }
+
+          tasks[day].push({ time: taskTime, description: taskDescription });
+
+          newTaskInput.value = "";
+          taskTimeInput.value = "";
+          renderTasks();
+          renderCalendar();
+        }
+
+        // Function to change the month
+        function changeMonth(offset) {
+          selectedDate.setMonth(selectedDate.getMonth() + offset);
+          renderCalendar();
+          renderAllTasks();
+        }
+
+        // Add event listeners for the buttons
+        addTaskBtn.addEventListener("click", addTask);
+        prevMonthBtn.addEventListener("click", () => changeMonth(-1));
+        nextMonthBtn.addEventListener("click", () => changeMonth(1));
+
+        // Initial render
+        renderCalendar();
+        selectDate(currentDate);
+      });
+    </script>
+  </body>
+</html>
